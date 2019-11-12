@@ -36,4 +36,5 @@ build
 .env
 
 #  exclude output folder for the examples
-examples/output
+examples/output/*
+!examples/output/.gitkeep
