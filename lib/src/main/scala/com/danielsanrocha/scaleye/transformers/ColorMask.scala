@@ -15,9 +15,8 @@ class ColorMask(lowerb: Color, upperb: Color) extends Transformer {
   private val log = LoggerFactory.getLogger(this.getClass)
 
   override def apply(image: Matrix): Future[Unit] = {
-    log.debug(
-      s"Applying ColorMask with Lower Boundary $lowerb and Upper Boundary $upperb"
-    )
+    log.debug(s"Applying ColorMask with Lower Boundary $lowerb and Upper Boundary $upperb")
+
     Future {
       opencv_core.inRange(
         image.cvmat,

@@ -13,12 +13,7 @@ class MorphologicalTransformer(operation: Int, kernel: Matrix) extends Transform
   override def apply(img: Matrix): Future[Unit] = {
     log.info("Applying MorphologicalTransfomer on a matrix")
     Future {
-      opencv_imgproc.morphologyEx(
-        img.cvmat,
-        img.cvmat,
-        operation,
-        kernel.cvmat
-      )
+      opencv_imgproc.morphologyEx(img.cvmat, img.cvmat, operation, kernel.cvmat)
     }
   }
 }

@@ -3,8 +3,8 @@ package com.danielsanrocha.scaleye.transformers
 import com.danielsanrocha.scaleye.extractors.Extractor
 import com.danielsanrocha.scaleye.linearalgebra.{Line, Matrix, Point}
 import org.bytedeco.javacpp.indexer.IntRawIndexer
-import org.bytedeco.javacpp.opencv_core.Mat
-import org.bytedeco.javacpp.{opencv_imgproc => Imgproc}
+import org.bytedeco.javacpp.opencv_core
+import org.bytedeco.javacpp.opencv_imgproc
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -14,21 +14,12 @@ class HoughLines(rho: Double, theta: Double, threshold: Int, minLineLength: Doub
   private val log = LoggerFactory.getLogger(this.getClass)
 
   override def apply(image: Matrix): Future[Seq[Line]] = {
-    log.debug(
-      s"Applying HoughLinesP to a image. Parameters: (rho -> ${rho}, theta -> ${theta}, threshold -> ${threshold})"
-    )
-    Future {
-      val linesMatrix = new Mat()
+    log.debug(s"Applying HoughLinesP to a image. Parameters: (rho -> ${rho}, theta -> ${theta}, threshold -> ${threshold})")
 
-      Imgproc.HoughLinesP(
-        image.cvmat,
-        linesMatrix,
-        rho,
-        theta,
-        threshold,
-        minLineLength,
-        maxLineGap
-      )
+    Future {
+      val linesMatrix = new opencv_core.Mat()
+
+      opencv_imgproc.HoughLinesP(image.cvmat, linesMatrix, rho, theta, threshold, minLineLength, maxLineGap)
 
       if (linesMatrix.empty()) {
         Seq()

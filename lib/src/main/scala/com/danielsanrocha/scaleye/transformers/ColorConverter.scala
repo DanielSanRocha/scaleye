@@ -14,6 +14,7 @@ class ColorConverter(mask: ColorConverter.Mask) extends Transformer {
 
   override def apply(image: Matrix): Future[Unit] = {
     log.debug(s"Applying ColorConverter to a image. Mask: $mask")
+
     Future {
       opencv_imgproc.cvtColor(image.cvmat, image.cvmat, mask.cvValue)
     }
