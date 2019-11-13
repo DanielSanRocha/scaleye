@@ -4,19 +4,21 @@ ThisBuild / scalaVersion := "2.13.0"
 
 run / fork := true
 
-lazy val global = project.in(file(".")).aggregate(lib, examples)
+lazy val global = project.in(file(".")).settings(noPublish).aggregate(lib, examples)
 
 lazy val lib = project
   .in(file("lib"))
-  .settings(name := "lib")
+  .settings(moduleName := "scaleye")
   .settings(libraryDependencies ++= libDependencies)
   .settings(assemblyJarName in assembly := "scaleye.jar")
+  .settings(publishSettings)
 
 lazy val examples = project
   .in(file("examples"))
   .settings(name := "examples")
   .settings(libraryDependencies ++= libDependencies)
   .settings(assemblyJarName in assembly := "examples.jar")
+  .settings(noPublish)
   .dependsOn(lib)
 
 lazy val javacvVersion = "1.4"
@@ -35,8 +37,31 @@ lazy val libDependencies = Seq(
 )
 
 // Publish configurations
+publishArtifact in lib := true
+publishArtifact in examples := false
 
-global / publish / skip := true
-examples / publish / skip := true
+lazy val noPublish = Seq(
+  publish := {},
+  publishLocal := {},
+  publishArtifact := false,
+  publish / skip := true
+)
 
-publishTo := Some(Resolver.file("local-ivy", file("path/to/ivy-repo/releases")))
+lazy val publishSettings = Seq(
+  organization := "com.danielsanrocha",
+  homepage := Some(url("https://github.com/danielsanrocha/scaleye")),
+  scmInfo := Some(ScmInfo(url("https://github.com/danielsanrocha/scaleye"), "git@github.com:danielsanrocha/scaleye.git")),
+  developers := List(
+    Developer("danielsanrocha", "Daniel Santana Rocha", "danielsantanarocha@gmail.com", url("https://github.com/danielsanrocha"))
+  ),
+  licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
+  publishMavenStyle := true,
+  publishArtifact := true,
+  publishArtifact in Test := false,
+  publishTo := Some(
+    if (isSnapshot.value)
+      Opts.resolver.sonatypeSnapshots
+    else
+      Opts.resolver.sonatypeStaging
+  )
+)
