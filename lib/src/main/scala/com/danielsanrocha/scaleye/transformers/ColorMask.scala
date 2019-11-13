@@ -11,6 +11,10 @@ import com.danielsanrocha.scaleye.Color
 
 import com.danielsanrocha.scaleye.linearalgebra.Matrix
 
+object ColorMask {
+  def apply(img: Matrix, lowerb: Color, upperb: Color): Future[Unit] = new ColorMask(lowerb, upperb)(img)
+}
+
 class ColorMask(lowerb: Color, upperb: Color) extends Transformer {
   private val log = LoggerFactory.getLogger(this.getClass)
 
