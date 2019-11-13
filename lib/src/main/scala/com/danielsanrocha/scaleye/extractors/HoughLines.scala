@@ -1,10 +1,8 @@
-package com.danielsanrocha.scaleye.transformers
+package com.danielsanrocha.scaleye.extractors
 
-import com.danielsanrocha.scaleye.extractors.Extractor
 import com.danielsanrocha.scaleye.linearalgebra.{Line, Matrix, Point}
 import org.bytedeco.javacpp.indexer.IntRawIndexer
-import org.bytedeco.javacpp.opencv_core
-import org.bytedeco.javacpp.opencv_imgproc
+import org.bytedeco.javacpp.{opencv_core, opencv_imgproc}
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.ExecutionContext.Implicits.global

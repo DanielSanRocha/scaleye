@@ -9,6 +9,8 @@ class Matrix private[scaleye] (private[scaleye] val cvmat: opencv_core.Mat) {
 
     new Matrix(mat)
   }
+
+  val shape: (Int, Int) = (cvmat.rows(), cvmat.cols())
 }
 
 object Matrix {
