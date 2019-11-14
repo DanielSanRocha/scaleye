@@ -8,6 +8,11 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
+object HoughLines {
+  def apply(img: Matrix, rho: Double, theta: Double, threshold: Int, minLineLength: Double, maxLineGap: Double): Future[Seq[Line]] =
+    new HoughLines(rho, theta, threshold, minLineLength, maxLineGap)(img)
+}
+
 class HoughLines(rho: Double, theta: Double, threshold: Int, minLineLength: Double, maxLineGap: Double) extends Extractor[Seq[Line]] {
   private val log = LoggerFactory.getLogger(this.getClass)
 
