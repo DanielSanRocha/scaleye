@@ -13,19 +13,50 @@ libraryDependencies ++= Seq(
 )
 ```
 
-Here a list of available version
+Here a list of available versions for each scala version.
 
 | Scaleye Version | Scala Version |
 | -------------   | ------------- |
 |      0.1.0      |     2.13      |
 
-## Sample Usage
+## Sample Usages
 
-The following code snippet show how is easy to execute sequential and parallel image processing tasks using scaleye.
-The code load a image located at "./sudoku.jpg" then sequentially 
+### Converting a image to grayscale
+
+It is easy to realize simple images operations with scaleye
+
+```scala
+import com.danielsanrocha.scaleye.Image
+import com.danielsanrocha.scaleye.transformers.ColorConverter
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+object Main {
+  val source = "./examples/images/flower.jpg"
+  val outputFile = "./examples/output/grayscale.jpg"
+  
+  val img = Image.load(source)
+
+  def main(args: Array[String]): Unit = {
+
+    // All operations are realized inside a Future making it easy to parallelize tasks
+    Await.ready(ColorConverter(img, ColorConverter.GRAYSCALE), 10.seconds)
+
+    Image.save(img, outputFile)
+  }
+}
+
+```
+
+### Extracting Lines and Drawing
+
+The following code snippet show to execute sequential and parallel image processing tasks using scaleye.
+
+The code load a image located at "./sudoku.jpg" then, sequentially,
 apply a ColorConverter, a ColorMask transformation and
-extracts lines using HoughLines algorithm; after that it draws the extracted lines in the original image (in parallel)
-and write the created image at at "./houghlines.jpg'.
+extracts lines using HoughLines algorithm; after that, it draws the extracted lines in the original image (in parallel)
+and write the created image at "./houghlines.jpg'.
 
 ```scala
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -83,7 +114,7 @@ Any contribution is welcome =)
 
 ## License
 
-This project is licensed under the Apache 2.0 license - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the Apache 2.0 license - see the [LICENSE](LICENSE) file for details.
 
 ## Contributors
 
