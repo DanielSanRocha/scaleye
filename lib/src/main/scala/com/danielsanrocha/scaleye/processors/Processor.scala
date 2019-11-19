@@ -1,6 +1,6 @@
 package com.danielsanrocha.scaleye.processors
 
-import com.danielsanrocha.scaleye.linearalgebra.Matrix
+import com.danielsanrocha.scaleye.Image
 
 import scala.concurrent.Future
 
@@ -12,5 +12,5 @@ import scala.concurrent.Future
   * @tparam T the type of the return after the computation.
   */
 trait Processor[T] {
-  def apply(img: Matrix): Future[T]
+  def apply(img: Image): Future[T]
 }

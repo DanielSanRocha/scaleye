@@ -1,10 +1,10 @@
 package com.danielsanrocha.scaleye.transformers
 
-import com.danielsanrocha.scaleye.Color
+import com.danielsanrocha.scaleye.{Color, Image}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import com.danielsanrocha.scaleye.linearalgebra.{Matrix, Point, Line}
+import com.danielsanrocha.scaleye.linearalgebra.{Line, Point}
 import org.bytedeco.javacpp.opencv_imgproc
 
 /** Draw simple geometric forms into images. **/
@@ -16,7 +16,7 @@ object Drawer {
     * @param color - The color of the line, for more information see [[Color]].
     * @param thickness - The thickness of the line in pixels.
     * */
-  def apply(img: Matrix, line: Line, color: Color, thickness: Int): Future[Unit] =
+  def apply(img: Image, line: Line, color: Color, thickness: Int): Future[Unit] =
     new LineDrawer(line, color, thickness)(img)
 
   /** Draw a point (filled circle) into a image.
@@ -25,7 +25,7 @@ object Drawer {
     * @param color - The color of the point, for more information see [[Color]].
     * @param radius - The radius of the point in pixels.
     * */
-  def apply(img: Matrix, point: Point, color: Color, radius: Int): Future[Unit] =
+  def apply(img: Image, point: Point, color: Color, radius: Int): Future[Unit] =
     new PointDrawer(point, color, radius)(img)
 }
 
@@ -37,7 +37,7 @@ private[transformers] trait Drawer extends Transformer {}
   * @param thickness - The thickness of the line in pixels.
   * */
 class LineDrawer(line: Line, color: Color, thickness: Int) extends Drawer {
-  override def apply(img: Matrix): Future[Unit] = {
+  override def apply(img: Image): Future[Unit] = {
     Future {
       val p1 = line.begin.toOpenCV
       val p2 = line.end.toOpenCV
@@ -52,7 +52,7 @@ class LineDrawer(line: Line, color: Color, thickness: Int) extends Drawer {
   * @param radius - The radius of the point in pixels.
   * */
 class PointDrawer(point: Point, color: Color, radius: Int) extends Drawer {
-  override def apply(img: Matrix): Future[Unit] = {
+  override def apply(img: Image): Future[Unit] = {
     Future {
       val p = point.toOpenCV
       opencv_imgproc.circle(img.cvmat, p, radius, color.toOopenCV(), -1, -1, 0)

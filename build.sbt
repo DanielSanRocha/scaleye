@@ -1,6 +1,6 @@
 name := "scaleye"
 ThisBuild / version := "0.1.0"
-ThisBuild / scalaVersion := "2.13.0"
+ThisBuild / scalaVersion := "2.12.8"
 
 run / fork := true
 
@@ -33,7 +33,8 @@ lazy val libDependencies = Seq(
   "org.bytedeco" % "javacv-platform" % javacvVersion % "provided",
   "com.typesafe" % "config" % typesafeConfigVersion,
   "com.typesafe.scala-logging" %% "scala-logging" % scalaLoggingVersion,
-  "ch.qos.logback" % "logback-classic" % logbackVersion
+  "ch.qos.logback" % "logback-classic" % logbackVersion,
+  "org.scalatest" %% "scalatest" % "3.0.8" % Test
 )
 
 // Publish configurations
